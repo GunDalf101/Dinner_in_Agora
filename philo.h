@@ -18,13 +18,18 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <unistd.h>
+
+typedef struct s_philosopher t_philosopher;
+typedef struct s_table t_table;
 
 enum				e_philostate
 {
 	THINKING,
 	EATING,
-	SLEEPING,
-	STARVING
+	NOTEATING,
+	STARVING,
+	FULL
 };
 
 enum				e_forkstate
@@ -59,33 +64,43 @@ typedef struct s_time
 	long long		currenttime;
 }					t_time;
 
-typedef struct s_philosopher
+
+struct s_philosopher
 {
 	int				id;
 	int				state;
 	pthread_t		philo;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
+	int				eatin_time;
+	int				sleepin_time;
 	t_time			watch;
-}					t_philosopher;
-
-typedef struct s_table
+	int				meals;
+	size_t			latest_meal;
+	t_table			*table;
+};
+struct s_table
 {
 	t_philosopher	**philos;
 	t_fork			**forks;
+	pthread_mutex_t	locker;
+	pthread_mutex_t	printlock;
 	int				philo_num;
 	int				life_time;
 	int				eatin_time;
 	int				sleepin_time;
-	int				starvin_time;
+	size_t			starvin_time;
 	int				currentphil;
 	t_time			clock;
-}					t_table;
+};
+
 
 int					ft_atoi(const char *str);
 void				error_thrower(int err);
 void				fork_mutex(t_table *table);
 void				philo_thread(t_table *table);
-void				timer(t_time *time);
+size_t				timer(t_time *time);
+void				sleeper(t_time *time, size_t how_much_to_sleep);
+int					supremeruler(t_table *table);
 
 #endif

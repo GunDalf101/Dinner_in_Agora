@@ -17,49 +17,37 @@ int	philosophizing(t_philosopher *philo)
 	int	i;
 
 	i = 0;
+	if (philo->id % 2 == 1)
+		sleeper(&philo->watch, 50);
 	while (1)
 	{
-		if (philo->left_fork->state == AVAILABLE && philo->right_fork->state == AVAILABLE)
-		{
-			pthread_mutex_lock(&(philo->left_fork->dafork));
-			pthread_mutex_lock(&(philo->right_fork->dafork));
-			philo->left_fork->state = UNAVAILABLE;
-			philo->right_fork->state = UNAVAILABLE;
+		pthread_mutex_lock(&philo->right_fork->dafork);
+		pthread_mutex_lock(&philo->table->printlock);
+		printf("%lu ms %d has taken a fork\n", timer(&philo->watch), philo->id);
+		pthread_mutex_unlock(&philo->table->printlock);
+		pthread_mutex_lock(&philo->left_fork->dafork);
+		pthread_mutex_lock(&philo->table->printlock);
+		printf("%lu ms %d has taken a fork\n", timer(&philo->watch), philo->id);
+		printf("%lu ms %d is eating\n", timer(&philo->watch), philo->id);
+		pthread_mutex_unlock(&philo->table->printlock);
+		if (philo->state != FULL)
 			philo->state = EATING;
-		}
-		if (philo->state == EATING)
-		{
-			timer(&(philo->watch));
-			printf(" philosopher %d is eating\n",
-					philo->id);
-			usleep(60 * 1000);
-			philo->state = STARVING;
-			philo->left_fork->state = AVAILABLE;
-			philo->right_fork->state = AVAILABLE;
-			pthread_mutex_unlock(&(philo->left_fork->dafork));
-			pthread_mutex_unlock(&(philo->right_fork->dafork));
-		}
-		else if (philo->state == SLEEPING)
-		{
-			timer(&(philo->watch));
-			printf(" philosopher %d is sleeping\n",
-					philo->id);
-			usleep(60 * 1000);
-		}
-		else if (philo->state == THINKING)
-		{
-			timer(&(philo->watch));
-			printf(" philosopher %d is thinking\n",
-					philo->id);
-			usleep(60 * 1000);
-		}
-		if (philo->state == STARVING)
-		{
-			timer(&(philo->watch));
-			printf(" philosopher %d died\n",
-					philo->id);
-			return (SUCCESS);
-		}
+		sleeper(&philo->watch, philo->eatin_time);
+		pthread_mutex_lock(&philo->table->locker);
+		philo->latest_meal = timer(&philo->watch);
+		if (philo->state != FULL)
+			philo->state = NOTEATING;
+		philo->meals++;
+		pthread_mutex_unlock(&philo->table->locker);
+		pthread_mutex_unlock(&philo->right_fork->dafork);
+		pthread_mutex_unlock(&philo->left_fork->dafork);
+		pthread_mutex_lock(&philo->table->printlock);
+		printf("%lu ms %d is sleeping\n", timer(&philo->watch), philo->id);
+		pthread_mutex_unlock(&philo->table->printlock);
+		sleeper(&philo->watch, philo->sleepin_time);
+		pthread_mutex_lock(&philo->table->printlock);
+		printf("%lu ms %d is thinking\n", timer(&philo->watch), philo->id);
+		pthread_mutex_unlock(&philo->table->printlock);
 	}
 	return (FAILURE);
 }
@@ -75,24 +63,22 @@ void	fork_mutex(t_table *table)
 	while (i < table->philo_num)
 	{
 		table->forks[i] = malloc(sizeof(t_fork));
-		pthread_mutex_init(&(table->forks[i]->dafork), NULL);
 		if (!table->forks[i])
 			error_thrower(1);
+		pthread_mutex_init(&(table->forks[i]->dafork), NULL);
 		table->forks[i]->state = AVAILABLE;
 		table->forks[i]->id = i + 1;
 		i++;
 	}
+	pthread_mutex_init(&(table->printlock), NULL);
+	pthread_mutex_init(&(table->locker), NULL);
 }
 
-void	philo_thread(t_table *table)
+void	philo_assigner(t_table *table)
 {
-	int i;
-	int rc;
+	int	i;
 
 	i = 0;
-	table->philos = malloc(table->philo_num * sizeof(t_philosopher));
-	if (!table->philos)
-		error_thrower(1);
 	while (i < table->philo_num)
 	{
 		table->philos[i] = malloc(sizeof(t_philosopher));
@@ -106,6 +92,27 @@ void	philo_thread(t_table *table)
 		table->philos[i]->right_fork = table->forks[i];
 		table->philos[i]->watch = table->clock;
 		table->philos[i]->state = -1;
+		table->philos[i]->meals = 0;
+		table->philos[i]->latest_meal = 0;
+		table->philos[i]->sleepin_time = table->sleepin_time;
+		table->philos[i]->eatin_time = table->eatin_time;
+		table->philos[i]->table = table;
+		i++;
+	}
+}
+
+void	philo_thread(t_table *table)
+{
+	int i;
+	int rc;
+
+	i = 0;
+	table->philos = malloc(table->philo_num * sizeof(t_philosopher));
+	philo_assigner(table);
+	if (!table->philos)
+		error_thrower(1);
+	while (i < table->philo_num)
+	{
 		rc = pthread_create(&(table->philos[i]->philo), NULL,
 				(void *)philosophizing, table->philos[i]);
 		if (rc)

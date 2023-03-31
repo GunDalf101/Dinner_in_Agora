@@ -4,7 +4,8 @@ SOURCES = philo.c \
 		myatoi.c\
 		errorhandle.c \
 		initer.c \
-		timer.c
+		timer.c \
+		ruler.c
 
 SOURCESBNS = 
 OBJECTS = $(SOURCES:.c=.o)
@@ -12,7 +13,7 @@ OBJECTSBNS = $(SOURCESBNS:.c=.o)
 INCLUDES = push_swap.h
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 
 all: elderscroll $(NAME)
 	@if [ $$? -eq 0 ]; then \
