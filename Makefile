@@ -13,7 +13,7 @@ OBJECTSBNS = $(SOURCESBNS:.c=.o)
 INCLUDES = push_swap.h
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 
 all: elderscroll $(NAME)
 	@if [ $$? -eq 0 ]; then \

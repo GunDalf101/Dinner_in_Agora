@@ -31,7 +31,7 @@ int immortality(t_table *table)
 	id = 0;
 	while (id < table->philo_num)
 	{
-		pthread_detach(table->philos[id]->philo);
+		pthread_join(table->philos[id]->philo, NULL);
 		id++;
 	}
 	pthread_mutex_unlock(&table->locker);
@@ -50,15 +50,35 @@ int death(t_table *table, size_t time_origin, int id)
 		printf("%lu ms %d died\n", timer(&table->clock), id + 1);
 		while (i < table->philo_num)
 		{
-			pthread_detach(table->philos[i]->philo);
+			pthread_join(table->philos[i]->philo, NULL);
 			i++;
 		}
-		pthread_mutex_unlock(&table->printlock);
 		pthread_mutex_unlock(&table->locker);
+		pthread_mutex_unlock(&table->printlock);
 		return (SUCCESS);
 	}
 	pthread_mutex_unlock(&table->locker);
 	return (FAILURE);
+}
+
+void	free_philo(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->philo_num)
+	{
+		free(table->philos[i]);
+		i++;
+	}
+
+	i = 0;
+
+	while (i < table->philo_num)
+	{
+		free(table->forks[i]);
+		i++;
+	}
 }
 
 int	supremeruler(t_table *table)
@@ -69,11 +89,11 @@ int	supremeruler(t_table *table)
 	i = 0;
 	time_origin = timer(&table->clock);
 	if (immortality(table) == SUCCESS)
-		return (FAILURE);
+		return (free_philo(table),free(table->philos), free(table->forks),FAILURE);
 	while (i < table->philo_num)
 	{
 		if (death(table, time_origin, i) == SUCCESS)
-			return (FAILURE);
+			return (free(table->philos), free(table->forks),FAILURE);
 		i++;
 	}
 	return (SUCCESS);

@@ -14,9 +14,6 @@
 
 int	philosophizing(t_philosopher *philo)
 {
-	int	i;
-
-	i = 0;
 	if (philo->id % 2 == 1)
 		sleeper(&philo->watch, 50);
 	while (1)
@@ -35,7 +32,7 @@ int	philosophizing(t_philosopher *philo)
 		pthread_mutex_unlock(&philo->table->locker);
 		sleeper(&philo->watch, philo->eatin_time);
 		pthread_mutex_lock(&philo->table->locker);
-		philo->latest_meal = timer(&philo->watch);
+		// philo->latest_meal = timer(&philo->watch);
 		philo->meals++;
 		pthread_mutex_unlock(&philo->table->locker);
 		pthread_mutex_unlock(&philo->right_fork->dafork);
@@ -118,6 +115,7 @@ void	philo_thread(t_table *table)
 				(void *)philosophizing, table->philos[i]);
 		if (rc)
 			error_thrower(1);
+		pthread_detach(table->philos[i]->philo);
 		i++;
 	}
 }

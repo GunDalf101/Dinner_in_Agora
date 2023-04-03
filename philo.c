@@ -25,10 +25,16 @@ void	parsedshit(char **av, t_table *table)
 	philo_thread(table);
 }
 
+void leks (void)
+{
+	system("leaks philo");
+}
+
 int	main(int ac, char **av)
 {
 	t_table	table;
 
+	atexit(leks);
 	gettimeofday(&(table.clock.timer), NULL);
 	table.clock.timeorigin = (table.clock.timer.tv_sec * 1000)
 		+ (table.clock.timer.tv_usec / 1000);
