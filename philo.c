@@ -39,6 +39,6 @@ int	main(int ac, char **av)
 	{
 		if (supremeruler(&table) == FAILURE)
 			return (SUCCESS);
-		usleep(10000);
+		usleep(5000);
 	}
 }

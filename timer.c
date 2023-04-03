@@ -24,6 +24,6 @@ void	sleeper(t_time *time, size_t how_much_to_sleep)
 {
 	size_t	starting_time;
 	starting_time = timer(time);
-	while (timer(time) - starting_time <= how_much_to_sleep)
+	while (timer(time) - starting_time < how_much_to_sleep)
 		usleep(100);
 }

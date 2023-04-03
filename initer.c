@@ -30,17 +30,18 @@ int	philosophizing(t_philosopher *philo)
 		printf("%lu ms %d has taken a fork\n", timer(&philo->watch), philo->id);
 		printf("%lu ms %d is eating\n", timer(&philo->watch), philo->id);
 		pthread_mutex_unlock(&philo->table->printlock);
-		if (philo->state != FULL)
-			philo->state = EATING;
+		pthread_mutex_lock(&philo->table->locker);
+		philo->latest_meal = timer(&philo->watch);
+		pthread_mutex_unlock(&philo->table->locker);
 		sleeper(&philo->watch, philo->eatin_time);
 		pthread_mutex_lock(&philo->table->locker);
 		philo->latest_meal = timer(&philo->watch);
-		if (philo->state != FULL)
-			philo->state = NOTEATING;
 		philo->meals++;
 		pthread_mutex_unlock(&philo->table->locker);
 		pthread_mutex_unlock(&philo->right_fork->dafork);
 		pthread_mutex_unlock(&philo->left_fork->dafork);
+		if (philo->meals == philo->table->life_time)
+			break ;
 		pthread_mutex_lock(&philo->table->printlock);
 		printf("%lu ms %d is sleeping\n", timer(&philo->watch), philo->id);
 		pthread_mutex_unlock(&philo->table->printlock);
