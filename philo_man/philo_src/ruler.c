@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   actions.c                                          :+:      :+:    :+:   */
+/*   ruler.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/02/15 11:44:17 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/04/05 02:34:40 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int immortality(t_table *table)
 		}
 		id++;
 	}
-	printf("Immortality achieved\n");
 	id = 0;
 	while (id < table->philo_num)
 	{
@@ -76,6 +75,7 @@ void	free_philo(t_table *table)
 
 	while (i < table->philo_num)
 	{
+		pthread_mutex_destroy(&table->forks[i]->dafork);
 		free(table->forks[i]);
 		i++;
 	}

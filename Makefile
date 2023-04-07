@@ -1,16 +1,21 @@
 NAME = philo
-NAMEBNS = checker
+NAMEBNS = bonus
 SOURCES = philo.c \
 		myatoi.c\
 		errorhandle.c \
 		initer.c \
 		timer.c \
-		ruler.c
+		ruler.c \
+		boring_routine.c
+SOURCESBNS = philo.c
 
-SOURCESBNS = 
-OBJECTS = $(SOURCES:.c=.o)
-OBJECTSBNS = $(SOURCESBNS:.c=.o)
-INCLUDES = push_swap.h
+MAN_SRC_DIR = philo_man/philo_src
+MAN_OBJ_DIR = philo_man/philo_obj
+BONUS_SRC_DIR = philo_man/philo_src
+BONUS_OBJ_DIR = philo_man/philo_obj
+OBJECTS = $(patsubst %,$(MAN_OBJ_DIR)/%,$(SOURCES:%.c=%.o))
+OBJECTSBNS = $(patsubst %,$(BONUS_OBJ_DIR)/%,$(SOURCESBNS:%.o=%c))
+INCLUDES = philo.h
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -35,17 +40,17 @@ $(NAMEBNS):$(OBJECTSBNS)
 	@$(CC) -o $@ $(OBJECTSBNS) $(CFLAGS)
 	@echo "\033[47m\033[30m\033[1m            \`$@ linked\`              \033[0m"
 
-%_bonus.o: %_bonus.c push_swap_bonus.h
-	@$(CC) -c $(CFLAGS) $<
+$(MAN_OBJ_DIR)/%_bonus.o: $(MAN_SRC_DIR)/%_bonus.c philo_bonus.h
+	@$(CC) -c $(CFLAGS) -o $@ $<
 	@echo "\033[33m$< compiled \033[0m"
 
-%.o: %.c philo.h
-	@$(CC) -c $(CFLAGS) $<
+$(MAN_OBJ_DIR)/%.o: $(MAN_SRC_DIR)/%.c philo_man/philo_src/philo.h
+	@$(CC) -c $(CFLAGS) -o $@ $<
 	@echo "\033[33m$< compiled \033[0m"
 
 
 clean:
-	@rm -f $(OBJECTS) $(OBJECTSBNS)
+	@rm -f $(OBJECTS)
 	@echo "\033[3m\033[1m\033[42m\033[31m~~   The objects have been cleaned   ~~\033[0m"; \
 	
 fclean: clean

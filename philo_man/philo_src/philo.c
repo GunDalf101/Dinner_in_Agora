@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:07 by mbennani          #+#    #+#             */
-/*   Updated: 2023/02/15 12:05:32 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/04/05 03:38:16 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,15 @@ void	parsedshit(char **av, t_table *table)
 	if (av[5])
 		table->life_time = ft_atoi(av[5]);
 	fork_mutex(table);
+	pthread_mutex_init(&(table->printlock), NULL);
+	pthread_mutex_init(&(table->locker), NULL);
 	philo_thread(table);
-}
-
-void leks (void)
-{
-	system("leaks philo");
 }
 
 int	main(int ac, char **av)
 {
 	t_table	table;
 
-	atexit(leks);
 	gettimeofday(&(table.clock.timer), NULL);
 	table.clock.timeorigin = (table.clock.timer.tv_sec * 1000)
 		+ (table.clock.timer.tv_usec / 1000);
