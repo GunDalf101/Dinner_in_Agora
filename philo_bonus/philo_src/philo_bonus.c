@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:07 by mbennani          #+#    #+#             */
-/*   Updated: 2023/04/07 14:38:43 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/04/07 15:48:21 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	parsedshit(char **av, t_table *table)
 {
@@ -22,25 +22,30 @@ void	parsedshit(char **av, t_table *table)
 	if (av[5])
 		table->life_time = ft_atoi(av[5]);
 	fork_sema(table);
-	pthread_mutex_init(&(table->printlock), NULL);
-	pthread_mutex_init(&(table->locker), NULL);
 	philo_thread(table);
 }
 
 int	main(int ac, char **av)
 {
 	t_table	table;
+	int		i;
 
+	i = 0;
 	gettimeofday(&(table.clock.timer), NULL);
 	table.clock.timeorigin = (table.clock.timer.tv_sec * 1000)
 		+ (table.clock.timer.tv_usec / 1000);
 	if (ac != 5 && ac != 6)
 		error_thrower(0);
 	parsedshit(av, &table);
+	printf("dude\n");
 	while (1)
 	{
-		if (supremeruler(&table) == FAILURE)
+		if (table.isded == TRUE)
+		{
+			while (i < table.philo_num)
+				kill(table.philos[i]->pid, 9);	
 			return (SUCCESS);
+		}
 		usleep(5000);
 	}
 }

@@ -6,13 +6,13 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/04/05 02:34:40 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/08 23:04:29 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int immortality(t_table *table)
+int	immortality(t_table *table)
 {
 	int	id;
 
@@ -37,7 +37,7 @@ int immortality(t_table *table)
 	return (SUCCESS);
 }
 
-int death(t_table *table, size_t time_origin, int id)
+int	death(t_table *table, size_t time_origin, int id)
 {
 	int	i;
 
@@ -53,7 +53,6 @@ int death(t_table *table, size_t time_origin, int id)
 			i++;
 		}
 		pthread_mutex_unlock(&table->locker);
-		pthread_mutex_unlock(&table->printlock);
 		return (SUCCESS);
 	}
 	pthread_mutex_unlock(&table->locker);
@@ -70,9 +69,7 @@ void	free_philo(t_table *table)
 		free(table->philos[i]);
 		i++;
 	}
-
 	i = 0;
-
 	while (i < table->philo_num)
 	{
 		pthread_mutex_destroy(&table->forks[i]->dafork);
@@ -89,11 +86,12 @@ int	supremeruler(t_table *table)
 	i = 0;
 	time_origin = timer(&table->clock);
 	if (immortality(table) == SUCCESS)
-		return (free_philo(table),free(table->philos), free(table->forks),FAILURE);
+		return (free_philo(table), free(table->philos) \
+		, free(table->forks), FAILURE);
 	while (i < table->philo_num)
 	{
 		if (death(table, time_origin, i) == SUCCESS)
-			return (free(table->philos), free(table->forks),FAILURE);
+			return (free(table->philos), free(table->forks), FAILURE);
 		i++;
 	}
 	return (SUCCESS);

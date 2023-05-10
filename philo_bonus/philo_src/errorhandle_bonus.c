@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   timer.c                                            :+:      :+:    :+:   */
+/*   errorhandle_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/13 16:24:54 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/08 23:04:58 by mbennani         ###   ########.fr       */
+/*   Created: 2023/02/13 09:49:00 by mbennani          #+#    #+#             */
+/*   Updated: 2023/04/07 13:27:17 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-size_t	timer(t_time *time)
+void	error_thrower(int err)
 {
-	gettimeofday(&(time->timer), NULL);
-	time->currenttime = (time->timer.tv_sec * 1000) + (time->timer.tv_usec
-			/ 1000);
-	return (time->currenttime - time->timeorigin);
-}
-
-void	sleeper(t_time *time, size_t how_much_to_sleep)
-{
-	size_t	starting_time;
-
-	starting_time = timer(time);
-	while (timer(time) - starting_time < how_much_to_sleep)
-		usleep(100);
+	if (err == 0)
+		printf("Error code 0: Wrong argument count\n");
+	else if (err == 1)
+		printf("Error code 1: Failed allocation\n");
+	exit(FAILURE);
 }

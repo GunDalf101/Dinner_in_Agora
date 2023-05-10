@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initer.c                                           :+:      :+:    :+:   */
+/*   initer_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:46:38 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/08 22:59:54 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:48:44 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	fork_sema(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	table->forks = malloc(table->philo_num * sizeof(t_fork));
-	if (!table->forks)
-		error_thrower(1);
-	while (i < table->philo_num)
-	{
-		table->forks[i] = malloc(sizeof(t_fork));
-		if (!table->forks[i])
-			error_thrower(1);
-		pthread_mutex_init(&(table->forks[i]->dafork), NULL);
-		table->forks[i]->state = AVAILABLE;
-		table->forks[i]->id = i + 1;
-		i++;
-	}
+	sem_unlink("/fourchette");
+	sem_unlink("/printer");
+	sem_unlink("/locker");
+	table->printer = sem_open("/printer", 1, O_CREAT | O_EXCL, 0777);
+	table->locker = sem_open("/locker", 1, O_CREAT | O_EXCL, 0777);
+	table->dafork = sem_open("/fourchette", table->philo_num, O_CREAT | O_EXCL, 0777);
 }
 
 void	philo_assigner(t_table *table)
@@ -43,11 +36,6 @@ void	philo_assigner(t_table *table)
 		if (!table->philos[i])
 			error_thrower(1);
 		table->philos[i]->id = i + 1;
-		if (i == 0)
-			table->philos[i]->left_fork = table->forks[table->philo_num - 1];
-		else
-			table->philos[i]->left_fork = table->forks[i - 1];
-		table->philos[i]->right_fork = table->forks[i];
 		table->philos[i]->watch = table->clock;
 		table->philos[i]->state = -1;
 		table->philos[i]->meals = 0;
@@ -61,8 +49,8 @@ void	philo_assigner(t_table *table)
 
 void	philo_thread(t_table *table)
 {
-	int	i;
-	int	rc;
+	int i;
+	int pid;
 
 	i = 0;
 	table->philos = malloc(table->philo_num * sizeof(t_philosopher));
@@ -71,11 +59,11 @@ void	philo_thread(t_table *table)
 		error_thrower(1);
 	while (i < table->philo_num)
 	{
-		rc = pthread_create(&(table->philos[i]->philo), NULL,
-				(void *)philosophizing, table->philos[i]);
-		if (rc)
-			error_thrower(1);
-		pthread_detach(table->philos[i]->philo);
+		pid = fork();
+		if (pid == 0)
+			philosophizing(table->philos[i]);
+		else
+			table->philos[i]->pid = pid;
 		i++;
 	}
 }

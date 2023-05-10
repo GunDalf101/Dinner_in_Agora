@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:18 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/08 23:00:30 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:54:43 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <pthread.h>
+# include <semaphore.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
-# include <unistd.h>
+# include <fcntl.h>
 
-typedef struct s_philosopher	t_philosopher;
-typedef struct s_table			t_table;
+typedef struct s_philosopher t_philosopher;
+typedef struct s_table t_table;
 
 enum				e_philostate
 {
@@ -50,13 +51,6 @@ enum				e_rval
 	FAILURE
 };
 
-typedef struct s_fork
-{
-	int				id;
-	int				state;
-	pthread_mutex_t	dafork;
-}					t_fork;
-
 typedef struct s_time
 {
 	struct timeval	timer;
@@ -67,10 +61,8 @@ typedef struct s_time
 struct s_philosopher
 {
 	int				id;
+	int				pid;
 	int				state;
-	pthread_t		philo;
-	t_fork			*left_fork;
-	t_fork			*right_fork;
 	int				eatin_time;
 	int				sleepin_time;
 	t_time			watch;
@@ -78,16 +70,18 @@ struct s_philosopher
 	size_t			latest_meal;
 	t_table			*table;
 };
+
 struct s_table
 {
 	t_philosopher	**philos;
-	t_fork			**forks;
-	pthread_mutex_t	locker;
-	pthread_mutex_t	printlock;
+	sem_t			*dafork;
+	sem_t			*printer;
+	sem_t			*locker;
 	int				philo_num;
 	int				life_time;
 	int				eatin_time;
 	int				sleepin_time;
+	int				isded;
 	size_t			starvin_time;
 	int				currentphil;
 	t_time			clock;
@@ -98,8 +92,9 @@ void				error_thrower(int err);
 void				fork_sema(t_table *table);
 void				philo_thread(t_table *table);
 size_t				timer(t_time *time);
-void				sleeper(t_time *time, size_t how_much_to_sleep);
+void				sleeper(t_time *time, size_t how_much_to_sleep, t_philosopher *philo);
 int					supremeruler(t_table *table);
 int					philosophizing(t_philosopher *philo);
+int					death(t_table *table, size_t time_origin, int id);
 
 #endif

@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"philo.h": "c",
+		"philo_bonus.h": "c",
+		"fcntl.h": "c",
+		"stdlib.h": "c"
+	}
+}
