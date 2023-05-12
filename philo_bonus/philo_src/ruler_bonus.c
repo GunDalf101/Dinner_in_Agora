@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/04/07 15:46:42 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:12:34 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,21 @@ int immortality(t_table *table)
 	return (SUCCESS);
 }
 
+
 int death(t_table *table, size_t time_origin, int id)
 {
 	int	i;
 
 	i = 0;
 	sem_wait(table->locker);
-	if (time_origin - table->philos[id]->latest_meal > table->starvin_time)
+	if (time_origin - table->philos[id - 1]->latest_meal > table->starvin_time)
 	{
 		sem_wait(table->printer);
-		printf("%lu ms %d died\n", timer(&table->clock), id + 1);
-		table->isded = TRUE;
-		exit(1);
+		printf("%lu ms %d died\n", timer(&table->clock), id);
+		sem_unlink("/fourchette");
+		sem_unlink("/printer");
+		sem_unlink("/locker");
+		exit (SUCCESS);
 	}
 	sem_post(table->locker);
 	return (FAILURE);
@@ -58,4 +61,5 @@ void	free_philo(t_table *table)
 		free(table->philos[i]);
 		i++;
 	}
+	exit (0);
 }

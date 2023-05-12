@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/08 23:04:29 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/11 23:39:08 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	death(t_table *table, size_t time_origin, int id)
 			pthread_join(table->philos[i]->philo, NULL);
 			i++;
 		}
-		pthread_mutex_unlock(&table->locker);
+		// pthread_mutex_unlock(&table->locker);
 		return (SUCCESS);
 	}
 	pthread_mutex_unlock(&table->locker);

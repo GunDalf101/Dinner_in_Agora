@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:07 by mbennani          #+#    #+#             */
-/*   Updated: 2023/04/07 14:38:43 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:50:03 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	parsedshit(char **av, t_table *table)
 	table->life_time = -1;
 	if (av[5])
 		table->life_time = ft_atoi(av[5]);
-	fork_sema(table);
+	fork_mutex(table);
 	pthread_mutex_init(&(table->printlock), NULL);
 	pthread_mutex_init(&(table->locker), NULL);
 	philo_thread(table);

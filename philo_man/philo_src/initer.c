@@ -6,13 +6,13 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:46:38 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/08 22:59:54 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:49:25 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	fork_sema(t_table *table)
+void	fork_mutex(t_table *table)
 {
 	int	i;
 

@@ -13,7 +13,8 @@ SOURCESBNS = philo_bonus.c \
 		initer_bonus.c \
 		timer_bonus.c \
 		ruler_bonus.c \
-		boring_routine_bonus.c
+		monitoring_threads_bonus.c \
+		boring_routine_bonus.c \
 
 MAN_SRC_DIR = philo_man/philo_src
 MAN_OBJ_DIR = philo_man/philo_obj
@@ -24,7 +25,7 @@ OBJECTSBNS = $(patsubst %,$(BONUS_OBJ_DIR)/%,$(SOURCESBNS:%.c=%.o))
 INCLUDES = philo.h
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Werror -Wextra
 
 all: elderscroll $(NAME)
 	@if [ $$? -eq 0 ]; then \

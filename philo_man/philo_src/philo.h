@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:18 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/08 23:00:30 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:49:17 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ struct s_table
 
 int					ft_atoi(const char *str);
 void				error_thrower(int err);
-void				fork_sema(t_table *table);
+void				fork_mutex(t_table *table);
 void				philo_thread(t_table *table);
 size_t				timer(t_time *time);
 void				sleeper(t_time *time, size_t how_much_to_sleep);

@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:18 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/08 22:54:43 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:35:21 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_H
 
 # include <semaphore.h>
+# include <pthread.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -61,6 +62,7 @@ typedef struct s_time
 struct s_philosopher
 {
 	int				id;
+	pthread_t		philo;
 	int				pid;
 	int				state;
 	int				eatin_time;
@@ -90,11 +92,14 @@ struct s_table
 int					ft_atoi(const char *str);
 void				error_thrower(int err);
 void				fork_sema(t_table *table);
-void				philo_thread(t_table *table);
+void				philo_proc(t_table *table);
 size_t				timer(t_time *time);
 void				sleeper(t_time *time, size_t how_much_to_sleep, t_philosopher *philo);
 int					supremeruler(t_table *table);
 int					philosophizing(t_philosopher *philo);
 int					death(t_table *table, size_t time_origin, int id);
+void				philo_thread(t_table *table);
+void				free_philo(t_table *table);
+int					killemall(t_table *table);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:46:38 by mbennani          #+#    #+#             */
-/*   Updated: 2023/04/07 14:48:44 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:34:02 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 void	fork_sema(t_table *table)
 {
-	int	i;
-
-	i = 0;
 	sem_unlink("/fourchette");
 	sem_unlink("/printer");
 	sem_unlink("/locker");
-	table->printer = sem_open("/printer", 1, O_CREAT | O_EXCL, 0777);
-	table->locker = sem_open("/locker", 1, O_CREAT | O_EXCL, 0777);
-	table->dafork = sem_open("/fourchette", table->philo_num, O_CREAT | O_EXCL, 0777);
+	table->printer = sem_open("/printer", O_CREAT | O_RDWR | O_EXCL, 0644, 1);
+	table->locker = sem_open("/locker", O_CREAT | O_RDWR | O_EXCL, 0644, 1);
+	table->dafork = sem_open("/fourchette", O_CREAT | O_RDWR | O_EXCL, 0644, table->philo_num);
 }
 
 void	philo_assigner(t_table *table)
@@ -47,7 +44,7 @@ void	philo_assigner(t_table *table)
 	}
 }
 
-void	philo_thread(t_table *table)
+void	philo_proc(t_table *table)
 {
 	int i;
 	int pid;
