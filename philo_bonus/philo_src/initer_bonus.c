@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:46:38 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/12 17:34:02 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/13 16:16:17 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ void	fork_sema(t_table *table)
 	sem_unlink("/fourchette");
 	sem_unlink("/printer");
 	sem_unlink("/locker");
-	table->printer = sem_open("/printer", O_CREAT | O_RDWR | O_EXCL, 0644, 1);
-	table->locker = sem_open("/locker", O_CREAT | O_RDWR | O_EXCL, 0644, 1);
-	table->dafork = sem_open("/fourchette", O_CREAT | O_RDWR | O_EXCL, 0644, table->philo_num);
+	table->printer = sem_open("/printer", O_CREAT | O_EXCL, 0644, 1);
+	table->locker = sem_open("/locker", O_CREAT | O_EXCL, 0644, 1);
+	table->dafork = sem_open("/fourchette", \
+	O_CREAT | O_EXCL, 0644, table->philo_num);
 }
 
 void	philo_assigner(t_table *table)
@@ -46,8 +47,8 @@ void	philo_assigner(t_table *table)
 
 void	philo_proc(t_table *table)
 {
-	int i;
-	int pid;
+	int	i;
+	int	pid;
 
 	i = 0;
 	table->philos = malloc(table->philo_num * sizeof(t_philosopher));

@@ -6,13 +6,13 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/12 21:12:34 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/13 16:17:53 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int immortality(t_table *table)
+int	immortality(t_table *table)
 {
 	int	id;
 
@@ -31,8 +31,7 @@ int immortality(t_table *table)
 	return (SUCCESS);
 }
 
-
-int death(t_table *table, size_t time_origin, int id)
+int	death(t_table *table, size_t time_origin, int id)
 {
 	int	i;
 

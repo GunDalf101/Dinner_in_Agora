@@ -6,12 +6,12 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:18 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/12 17:35:21 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/13 16:16:56 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <semaphore.h>
 # include <pthread.h>
@@ -22,8 +22,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-typedef struct s_philosopher t_philosopher;
-typedef struct s_table t_table;
+typedef struct s_philosopher	t_philosopher;
+typedef struct s_table			t_table;
 
 enum				e_philostate
 {
@@ -94,7 +94,8 @@ void				error_thrower(int err);
 void				fork_sema(t_table *table);
 void				philo_proc(t_table *table);
 size_t				timer(t_time *time);
-void				sleeper(t_time *time, size_t how_much_to_sleep, t_philosopher *philo);
+void				sleeper(t_time *time, size_t how_much_to_sleep, \
+t_philosopher *philo);
 int					supremeruler(t_table *table);
 int					philosophizing(t_philosopher *philo);
 int					death(t_table *table, size_t time_origin, int id);
