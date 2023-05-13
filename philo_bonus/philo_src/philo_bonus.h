@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:18 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 16:16:56 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/13 22:54:13 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void				philo_proc(t_table *table);
 size_t				timer(t_time *time);
 void				sleeper(t_time *time, size_t how_much_to_sleep, \
 t_philosopher *philo);
-int					supremeruler(t_table *table);
 int					philosophizing(t_philosopher *philo);
 int					death(t_table *table, size_t time_origin, int id);
 void				philo_thread(t_table *table);

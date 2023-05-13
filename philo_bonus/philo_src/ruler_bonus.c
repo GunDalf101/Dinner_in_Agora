@@ -6,30 +6,11 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 16:17:53 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/13 22:54:05 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-int	immortality(t_table *table)
-{
-	int	id;
-
-	id = 0;
-	sem_wait(table->locker);
-	while (id < table->philo_num)
-	{
-		if (table->philos[id]->meals != table->life_time)
-		{
-			sem_post(table->locker);
-			return (FAILURE);
-		}
-		id++;
-	}
-	sem_post(table->locker);
-	return (SUCCESS);
-}
 
 int	death(t_table *table, size_t time_origin, int id)
 {
@@ -58,7 +39,10 @@ void	free_philo(t_table *table)
 	while (i < table->philo_num)
 	{
 		free(table->philos[i]);
+		table->philos[i] = NULL;
 		i++;
 	}
+	free(table->philos);
+	table->philos = NULL;
 	exit (0);
 }

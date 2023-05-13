@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 01:44:32 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 16:21:19 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/13 22:50:46 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	philosophizing(t_philosopher *philo)
 		sem_post(philo->table->dafork);
 		sem_post(philo->table->dafork);
 		if (philo->meals == philo->table->life_time)
-			break ;
+			exit (SUCCESS);
 		routine_helper(philo);
 	}
 	return (FAILURE);

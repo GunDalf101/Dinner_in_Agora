@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 09:44:11 by mbennani          #+#    #+#             */
-/*   Updated: 2023/02/15 11:44:20 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/13 16:29:32 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,17 @@ static int	itisspace(const char *str, int *pi)
 	else if (str[i] == 43)
 		i++;
 	*pi = i;
+	if (str[i] < 48 || str[i] > 57)
+		return (error_thrower(2), 0);
 	return (count);
 }
 
 int	ft_atoi(const char *str)
 {
-	int	sign;
-	int	res;
-	int	prv;
-	int	i;
+	int				sign;
+	int				res;
+	int				prv;
+	int				i;
 
 	res = 0;
 	sign = itisspace(str, &i);
@@ -53,13 +55,11 @@ int	ft_atoi(const char *str)
 		prv = res;
 		res = res * 10 + (str[i] - 48);
 		if (isoverflow(prv, res) == 1)
-		{
-			if (sign == -1)
-				return (0);
-			return (-1);
-		}
+			return (error_thrower(3), 0);
 		i++;
 	}
+	if ((str[i] < 48 || str[i] > 57) && str[i])
+		return (error_thrower(2), 0);
 	res *= sign;
 	return (res);
 }
