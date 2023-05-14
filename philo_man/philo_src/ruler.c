@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 16:29:53 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/14 17:16:40 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,6 @@ int	death(t_table *table, size_t time_origin, int id)
 	{
 		pthread_mutex_lock(&table->printlock);
 		printf("%lu ms %d died\n", timer(&table->clock), id + 1);
-		while (i < table->philo_num)
-		{
-			pthread_join(table->philos[i]->philo, NULL);
-			i++;
-		}
 		pthread_mutex_unlock(&table->locker);
 		return (SUCCESS);
 	}

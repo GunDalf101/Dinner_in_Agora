@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 16:24:54 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 22:54:01 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/14 16:55:48 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ void	sleeper(t_time *time, size_t how_much_to_sleep, t_philosopher *philo)
 	{
 		usleep(100);
 		death(philo->table, timer(time), philo->id);
+		immortality(philo->table);
 	}
 }

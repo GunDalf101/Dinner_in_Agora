@@ -6,11 +6,35 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 22:54:05 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/14 17:05:35 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+int immortality(t_table *table)
+{
+	int	id;
+
+	id = 0;
+	sem_wait(table->locker);
+	sem_wait(table->printer);
+	while (id < table->philo_num)
+	{
+		if (table->philos[id]->meals != table->life_time)
+		{
+			sem_post(table->printer);
+			sem_post(table->locker);
+			return (FAILURE);
+		}
+		id++;
+	}
+	sem_post(table->locker);
+	sem_unlink("/fourchette");
+	sem_unlink("/printer");
+	sem_unlink("/locker");
+	return (SUCCESS);
+}
 
 int	death(t_table *table, size_t time_origin, int id)
 {

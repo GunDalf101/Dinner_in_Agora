@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:18 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 22:54:13 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/05/14 16:55:29 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ int					death(t_table *table, size_t time_origin, int id);
 void				philo_thread(t_table *table);
 void				free_philo(t_table *table);
 int					killemall(t_table *table);
+int					immortality(t_table *table);
 
 #endif
