@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:29:18 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/11 19:49:17 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/06/19 14:41:28 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ enum				e_bool
 enum				e_rval
 {
 	SUCCESS,
-	FAILURE
+	FAILURE = -1
 };
 
 typedef struct s_fork
@@ -75,7 +75,7 @@ struct s_philosopher
 	int				sleepin_time;
 	t_time			watch;
 	int				meals;
-	size_t			latest_meal;
+	int				latest_meal;
 	t_table			*table;
 };
 struct s_table
@@ -88,15 +88,15 @@ struct s_table
 	int				life_time;
 	int				eatin_time;
 	int				sleepin_time;
-	size_t			starvin_time;
+	int				starvin_time;
 	int				currentphil;
 	t_time			clock;
 };
 
 int					ft_atoi(const char *str);
-void				error_thrower(int err);
-void				fork_mutex(t_table *table);
-void				philo_thread(t_table *table);
+int					error_thrower(int err);
+int					fork_mutex(t_table *table);
+int					philo_thread(t_table *table);
 size_t				timer(t_time *time);
 void				sleeper(t_time *time, size_t how_much_to_sleep);
 int					supremeruler(t_table *table);

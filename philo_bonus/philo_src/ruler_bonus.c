@@ -6,13 +6,13 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/14 17:05:35 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/06/19 14:48:40 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int immortality(t_table *table)
+int	immortality(t_table *table)
 {
 	int	id;
 

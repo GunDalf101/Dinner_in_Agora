@@ -6,13 +6,13 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 09:49:00 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/13 16:29:17 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/06/19 14:47:50 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_thrower(int err)
+int	error_thrower(int err)
 {
 	if (err == 0)
 		printf("Error code 0: Wrong argument count\n");
@@ -22,5 +22,5 @@ void	error_thrower(int err)
 		printf("Error code 2: Unexpected character\n");
 	else if (err == 3)
 		printf("Error code 3: Argument overflow\n");
-	exit(FAILURE);
+	return (FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: mbennani <mbennani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 12:10:25 by mbennani          #+#    #+#             */
-/*   Updated: 2023/05/14 17:16:40 by mbennani         ###   ########.fr       */
+/*   Updated: 2023/06/19 14:43:17 by mbennani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	immortality(t_table *table)
 	return (SUCCESS);
 }
 
-int	death(t_table *table, size_t time_origin, int id)
+int	death(t_table *table, int time_origin, int id)
 {
 	int	i;
 
@@ -76,7 +76,7 @@ void	free_philo(t_table *table)
 int	supremeruler(t_table *table)
 {
 	int		i;
-	size_t	time_origin;
+	int		time_origin;
 
 	i = 0;
 	time_origin = timer(&table->clock);
